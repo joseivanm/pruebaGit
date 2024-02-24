@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head>
+<title>Json</title>
+<meta charset="utf-8">
+ 
+<style type="text/css">
+ *{font-family:sans-serif;} 
+a:link {text-decoration:none;} 
+select{font-size:18px;}
+ 
+div div 
+{color: blue; background-color:#F1FEC6; font-size: 20px; float:left; border: solid; margin: 20px; padding:15px;}
+ 
+</style>
+ 
+
+<script>
+
+
+function mostrarSugerencia() 
+{
+
+
+	var xmlhttp;
+
+xmlhttp=new XMLHttpRequest();
+
+
+	xmlhttp.onreadystatechange = function() 
+	{
+
+
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+		{
+
+
+			var nodoMostrarResultados = document.getElementById('listaLibros');
+
+    
+			var jsonResponse = xmlhttp.responseText;
+    
+			var objeto_json = JSON.parse(jsonResponse);
+    
+			libros = objeto_json.libreria.libros;
+
+    
+			var contenidosAMostrar=""; 
+
+    
+			for (var i=0; i<libros.length;i++) 
+			{
+	
+				contenidosAMostrar = contenidosAMostrar+'<div>' + libros[i].Titulo +'</div>';
+    
+			}
+
+
+			if (contenidosAMostrar) 
+			{
+				nodoMostrarResultados.innerHTML = contenidosAMostrar;
+		}    
+
+	}
+
+}
+
+
+//nocache explicado en la informacion adicional punto 3.8
+xmlhttp.open("GET","libros.json?nocache=' + (new Date()).getTime()");
+
+xmlhttp.send();
+
+}
+
+
+</script></head>
+
+
+<body style="margin:20px;">
+
+
+<p>Informacion sobre los libros disponibles: <span style="color:brown;" id="txtInformacion" onclick="mostrarSugerencia()"> Pincha aqui</span></p>
+
+<div id="listaLibros"> </div>
+
+</body>
+</html>
